@@ -147,21 +147,16 @@ type with certain type arguments at runtime. -->
 `ints is List<Int>` or `list is T` (type parameter). You can, however, check an instance against a [star-projected type](generics.html#star-projections):-->
 Учитывая это, компилятор запрещает **is**-проверки, которые не могут быть выполнены во время выполнения программы из-за стирания типов, например `ints is List<Int>` или `list is T` (параметризированный тип). Однако у вас есть возможность произвести проверку со ["Звёздными" проекциями](generics.html#"Звёздные"-проекции):
 
-<div class="sample" markdown="1" theme="idea" data-highlight-only>
-
 ```kotlin
 if (something is List<*>) {
     something.forEach { println(it) } // Элементы типа `Any?`
 }
 ```
-</div>
 
 <!--Similarly, when you already have the type arguments of an instance checked statically (at compile time),
 you can make an *is*{: .keyword }-check or a cast that involves the non-generic part of the type. Note that 
 angle brackets are omitted in this case:-->
 Таким же образом, когда у вас есть статически определенный тип аргумента, вы можете произвести **is**-проверку или приведение с не-обобщенной частью типа. Заметье, что в данном случае угловые скобки пропущены:
-
-<div class="sample" markdown="1" theme="idea" data-highlight-only>
 
 ```kotlin
 fun handleStrings(list: List<String>) {
@@ -170,7 +165,6 @@ fun handleStrings(list: List<String>) {
     }
 }
 ```
-</div>
 
 <!--The same syntax with omitted type arguments can be used for casts that do not take type arguments into account: `list as ArrayList`. -->
 Аналогичный синтаксис, с пропущенным типом аргумента может использоваться для приведений, которые не принимают типы аргументы: `list as ArrayList`
@@ -179,8 +173,6 @@ fun handleStrings(list: List<String>) {
  inlined at each call site, which enables `arg is T` checks for the type parameters, but if `arg` is an instance of a 
 generic type itself, *its* type arguments are still erased. Example:-->
 Встроенные (inline) функции с [параметрами вещественного типа](inline-functions.html#Параметры-вещественного-типа) имеют свои аргументы типа, встроенные на каждый момент вызова, что позволяет `arg is T` проверку параметризованного типа, но если `arg` является объектом обобщенного типа, его аргумент типа по-прежнему стирается. Пример:
-
-<div class="sample" markdown="1" theme="idea">
 
 ```kotlin
 inline fun <reified A, reified B> Pair<*, *>.asPairOf(): Pair<A, B>? {
@@ -195,7 +187,6 @@ val stringToInt = somePair.asPairOf<String, Int>()
 val stringToList = somePair.asPairOf<String, List<*>>()
 val stringToStringList = somePair.asPairOf<String, List<String>>() // Нарушает типобезопасность!
 ```
-</div>
 
 <!--## Unchecked casts-->
 ## Непроверяемые (Unchecked) приведения
@@ -208,8 +199,6 @@ type safety. -->
 <!--Even so, sometimes we have high-level program logic that implies type safety instead. For example:-->
 Тем не менее, иногда мы имеем программную логику высокого уровня, которая вместо этого подразумевает типобезопасность. Например:
 
-<div class="sample" markdown="1" theme="idea" data-highlight-only>
-
 ```kotlin 
 fun readDictionary(file: File): Map<String, *> = file.inputStream().use { 
     TODO("Прочитать сопоставление строк с произвольными элементами.")
@@ -221,7 +210,6 @@ val intsFile = File("ints.dictionary")
 // Warning: Unchecked cast: `Map<String, *>` to `Map<String, Int>`
 val intsDictionary: Map<String, Int> = readDictionary(intsFile) as Map<String, Int>
 ```
-</div>
 
 <!--The compiler produces a warning for the cast in the last line. The cast cannot be fully checked at runtime and provides 
 no guarantee that the values in the map are `Int`.-->
@@ -240,7 +228,6 @@ such as `arg as T` checked, unless `arg`'s type has *its own* type arguments tha
 <!--An unchecked cast warning can be suppressed by [annotating](annotations.html#annotations) the statement or the 
 declaration where it occurs with `@Suppress("UNCHECKED_CAST")`:-->
 Предупреждение о непроверяемом приведении можно убрать используя [аннотации](annotations.html)
-<div class="sample" markdown="1" theme="idea" data-highlight-only auto-indent="false">
 
 ```kotlin
 inline fun <reified T> List<*>.asListOfType(): List<T>? =
@@ -249,7 +236,6 @@ inline fun <reified T> List<*>.asListOfType(): List<T>? =
         this as List<T> else
         null
 ```
-</div>
 
 <!--On the JVM, the [array types](basic-types.html#arrays) (`Array<Foo>`) retain the information about the erased type of 
 their elements, and the type casts to an array type are partially checked: the 
